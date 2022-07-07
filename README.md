@@ -23,6 +23,12 @@ vous pouvez vous en reservir pour vos serveurs discords .
 ```http
   pip install youtubedl
 ```
+## CHANGER LE TOKEN
+
+Pour faire marcher votre bot il suffira d'aller à la ligne où se situe
+
+`HACKCESSTOKENBOT =` et de remplacer par le vôtre.
+
 ## Auteurs
 
 - [@hackcess](https://github.com/cesshack)
