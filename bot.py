@@ -3,15 +3,21 @@
 #pip install discord
 #pip install json
 #----------------
+from asyncio import tasks
 from http import client
 import discord #Module python
+#import keep_alive #Pour l'hebergeur
 import json #Pour le fichier prefixes
-from discord.ext import commands #Module python
-from discord_slash import SlashCommand #Pour mettre les commandes en /hackcess au lieu de hackcess
+from discord.ext import commands , tasks #Module python
+#from discord_slash import SlashCommand #Pour mettre les commandes en /hackcess au lieu de hackcess
 #from discord_slash.utils.manage_commands import create_option, create_choice 
 import youtube_dl #Pour recupérer des zic de youtube
 import asyncio
 import os
+import requests
+import re
+#keep_alive.keep_alive()
+
 
 
 
@@ -53,7 +59,9 @@ async def on_ready(): #Quand il est demarrer alors
     statushackcess = discord.Activity(type=discord.ActivityType.watching , name="hackcess.org") #Fonction status
     hackcessstatus = discord.Status.online #Mets le status du bot en ligne
     await hackcessbot.change_presence(status=hackcessstatus,activity= statushackcess) #Affiche status discord avec en ligne + message 
-  
+    #Initialise le checking
+    hackcesscheckforvideos()
+    
     
     #----------------------------------------------------------------------#
     
@@ -129,9 +137,15 @@ async def aide(ctx):
 @hackcessbot.command(name="credits")
 async def credits(ctx):
     await ctx.message.delete() #Supprime la commande instant
-    await ctx.send("Bot discord créer par `Hackcess Version 1.0`")
+    em = discord.Embed(
+        title = 'Credits',
+        description = 'Hackcess Support'
+    )
+    em=discord.Embed(description=f'Bot discord créér par  `Hackcess Version 1.1` / https://hackcess.org ', color = 0xF0FFF0)
+    em.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
+    await ctx.send(embed= em) 
     
-@hackcessbot.command(name="clear") #Commande clear    
+@hackcessbot.command(name="clear") #Commande clear
 @commands.has_permissions(manage_messages=True)#Si permissions de gérér la message alors il peux executer la commande clear
 async def clear(ctx, amount:int):
     await ctx.message.delete() #Supprime la commande instant
@@ -165,10 +179,74 @@ async def leave(ctx):
 
 
 
-
-
-
+#NOTIFICATION YOUTUBE
+@tasks.loop(seconds=30.0) #Regarde toute les 30 secondes si il n'y a pas de nouvelle vidéo
+async def hackcesscheckforvideos():
+    with open("youtubedata.json","r") as f:
+        data = json.load(f)
+        
+        print("Je check un coup d'oeil ")
+        
+        #Regarde toutes le chaines youtube du fichier youtubedata.json
+        for youtube_channel in data:
+            
+            #Recuperation du lien de la chaine yt
+            chaineyt = f"https://www.youtube.com/channel/{youtube_channel}"
+            
+            
+            html = requests.get(chaineyt+"/vidéos").text
+            
+            #Derniere video url
+            try:
+                dernierevideo = f"https://www.youtube.com/watch?v="+ re.search('(?<="videoId":").?(?=")' ,html).group()
+            except:
+                continue
+            
+            if not str(data[youtube_channel]["latest_video_url"]) == dernierevideo :
+                
+                data[str(youtube_channel)]['latest_video_url'] = dernierevideo
+                
+                with open("youtubedata.json","w") as f:
+                    json.dump(data, f)
+                    
+                    
+                 #Pour envoyer le msg   
+                discord_channel_id = data[str(youtube_channel)]['notifying_discord']
+                discord_channel = hackcessbot.get_channel(int(discord_channel_id))
+                
+                msg =discord.Embed(description = f"@Membres , @Adhérents {data[str(youtube_channel)]['channel_name']} Nouvelle vidéo sur la chaine Hackcess,allez voir : {dernierevideo}",color = 0xff0000 )
+                
+                await discord_channel.send(embed=msg)
+                
+@hackcessbot.command()
+@commands.has_permissions(administrator=True)
+async def addyt(ctx,channel_id:str,*,channel_name:str): #Ajouter d'autre notifications YT
+    with open("youtubedata.json","r") as f:
+        data = json.load(f)
     
+    data[str(channel_id)]={}
+    data[str(channel_id)]["channel_name"]= channel_name
+    data[str(channel_id)]["latest_video_url"]="none"
+    
+    with open("youtubedata.json","w") as f:
+        json.dump(data,f)
+        
+    await ctx.send("Ajouter les données de votre compte")
+
+@hackcessbot.command(name="startnotif") 
+@commands.has_permissions(administrator=True) #ON notif
+async def startpnotif(ctx):
+    hackcesscheckforvideos.start()
+    await ctx.send("Notification ON")  
+    
+@hackcessbot.command(name="stopnotif") #Off notif
+@commands.has_permissions(administrator=True)
+async def stopnotif(ctx):
+    hackcesscheckforvideos.stop()
+    await ctx.send("Notification OFF")
+    
+
+#LEVEL VERSION 1.2
     
 
 
