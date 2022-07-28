@@ -15,18 +15,18 @@ vous pouvez vous en reservir pour vos serveurs discords .
 
 #### GIT CLONE
 
-```http
+```bash
   git clone https://github.com/cesshack/HackcessBot
 ```
 
 #### Installez les modules suivants :
-```http
+```bash
   pip install discord
 ```
-```http
+```bash 
   pip install asyncio
 ```
-```http
+```bash
   pip install youtubedl
 ```
 ## CHANGER LE TOKEN
