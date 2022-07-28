@@ -7,9 +7,11 @@ Bienvenu sur le code source de notre bot python,
 qui sera mis à jour pour l'instant c'est une version basique,
 vous pouvez vous en reservir pour vos serveurs discords . 
 
-##PREFIX DE BASE :
-hackcess
-Vous pouvez le modifier avec la commande hackcess changeprefix [levotre]
+# PREFIX DE BASE :
+## hackcess
+### Vous pouvez le modifier avec la commande hackcess changeprefix [levotre]
+
+# GUIDE D'INSTALLATION : 
 
 #### GIT CLONE
 
@@ -50,3 +52,7 @@ changeprefix,ping
 ## Auteurs
 
 - [@hackcess](https://github.com/cesshack)
+
+## SITE WEB
+
+- [@www.hackcess.org](https://hackcess.org)
