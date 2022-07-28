@@ -7,6 +7,10 @@ Bienvenu sur le code source de notre bot python,
 qui sera mis à jour pour l'instant c'est une version basique,
 vous pouvez vous en reservir pour vos serveurs discords . 
 
+##PREFIX DE BASE :
+hackcess
+Vous pouvez le modifier avec la commande hackcess changeprefix [levotre]
+
 #### GIT CLONE
 
 ```http
@@ -28,6 +32,20 @@ vous pouvez vous en reservir pour vos serveurs discords .
 Pour faire marcher votre bot il suffira d'aller à la ligne où se situe
 
 `HACKCESSTOKENBOT =` et de remplacer par le vôtre.
+
+## Commandes / Aides :
+
+Toutes les commandes du bot
+
+#### General :
+credits
+#### Musique :
+join,leave,play,skip,pause,resume
+#### Moderation :
+kick,ban,tempban,unban,clear
+###Autre : 
+changeprefix,ping
+
 
 ## Auteurs
 
