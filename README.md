@@ -9,6 +9,7 @@ vous pouvez vous en reservir pour vos serveurs discords .
 
 # PREFIX DE BASE :
 ## hackcess
+### La première commande que vous pouvez utiliser est `hackcess aide` afin d'afficher toutes les commandes.
 ### Vous pouvez le modifier avec la commande hackcess changeprefix [levotre]
 
 # GUIDE D'INSTALLATION : 
