@@ -148,7 +148,7 @@ async def credits(ctx):
         description = 'Hackcess Support',
         color = discord.Color.blue()
     )
-    em=discord.Embed(description=f'Bot discord créér par  `Hackcess Version 1.2 [MUSIC ADD]` / https://hackcess.org ', color = discord.Color.blue() )
+    em=discord.Embed(description=f'Bot discord créér par  `Hackcess Version 1.3 [LEVEL UPDATE]` / https://hackcess.org ', color = discord.Color.blue() )
     em.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
     await ctx.send(embed= em) 
     
