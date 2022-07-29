@@ -1,5 +1,5 @@
 # HackcessBot
-# Bot Discord V1.2.5
+# Bot Discord V1.3
 
 
 Bonjour,bonsoir .
@@ -47,7 +47,7 @@ join,leave,play,skip,pause,resume
 #### Moderation :
 kick,ban,tempban,unban,clear
 ### Autre : 
-changeprefix,ping
+changeprefix,ping,bvn
 
 
 ## Auteurs
