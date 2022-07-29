@@ -1,5 +1,5 @@
 # HackcessBot
-# Bot Discord V1.2 
+# Bot Discord V1.3
 
 
 Bonjour,bonsoir .
