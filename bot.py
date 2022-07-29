@@ -45,7 +45,7 @@ def prefix(hackcessbot, message):
     return prefixes[str(message.guild.id)]
     
 
-hackcessbot = commands.Bot(command_prefix= prefix,help_command=None , description = "Bot Multitâche créé par Hackcess ") #prefix du bot + Commande help 
+hackcessbot = commands.Bot(command_prefix= prefix,help_command=None , description = "Bot Multitâche créé par Hackcess ", intents= discord.Intents.all()) #prefix du bot + Commande help 
 #slash = SlashCommand(hackcessbot, sync_commands= True)
 musics = {}
 ytdl = youtube_dl.YoutubeDL()
@@ -101,10 +101,24 @@ async def on_guild_remove(guild):
     with open('prefixes.json','w') as f:
         json.dump(prefixes, f, indent=4)
         
+
 @hackcessbot.event
 async def on_member_join(member):
-    role = discord.utils.get(member.server.roles, name="Membres")
-    await client.add_roles(member, role)
+   
+
+    embed = discord.Embed(
+       title = f'Bienvenue sur le serveur',url="https://hackcess.org",#Titre de l'embed 
+       description = f'Nous sommes maintenant {member.guild.member_count}',
+       color = discord.Color.green() #Couleur verte
+   )
+    embed.set_thumbnail(url="https://yt3.ggpht.com/YYkVCgqAVNQjQ7biIgrlFNNsWEMvSvCQ-R7Xq4upFdCIEUkvKF-aCmWHkWOhK1oK6dhGDDHwRg=s900-c-k-c0x00ffffff-no-rj")
+    embed.add_field(name='General',value='`credits`') #Saute une ligne inline=False
+    embed.add_field(name='Autre',value='`ping`,`ticket`,`bvn`',inline=False) 
+    embed.add_field(name=f'Voici les commandes que tu peux exécuter sur le serveur',value='`Crée par Hackcess`',inline=False) 
+  
+    await member.send(embed=embed)
+    
+    
         
 #----------------------------------------#    
 
@@ -123,7 +137,7 @@ async def ping(ctx,arg=None):
 @hackcessbot.command(name='aide',aliases=["help","h"]) #Commande help
 async def aide(ctx):
    embed = discord.Embed(
-       title = 'Aide', #Titre de l'embed 'Aide'
+       title = 'Aide',url="https://hackcess.org",#Titre de l'embed 'Aide'
        description = 'Toutes les commandes du bot : https://cesshack.github.io/HackcessBot/',
        color = discord.Color.green() #Couleur verte
    )
@@ -132,7 +146,7 @@ async def aide(ctx):
    embed.add_field(name='General',value='`credits`')
    embed.add_field(name='Musique',value='`join`,`leave`,`play`,`skip`,`pause`,`resume`',inline=False)
    embed.add_field(name='Moderation',value='`kick`,`ban`,`tempban`,`unban`,`clear`',inline=False) #Saute une ligne inline=False
-   embed.add_field(name='Autre',value='`changeprefix`,`ping`,`ticket`',inline=False) #Saute une ligne inline=False
+   embed.add_field(name='Autre',value='`changeprefix`,`ping`,`ticket`,`bvn`',inline=False) #Saute une ligne inline=False
    await ctx.send(embed=embed)
 
     
@@ -146,7 +160,7 @@ async def credits(ctx):
         description = 'Hackcess Support',
         color = discord.Color.blue()
     )
-    em=discord.Embed(description=f'Bot discord créér par  `Hackcess Version 1.3 [LEVEL UPDATE]` / https://hackcess.org ', color = discord.Color.blue() )
+    em=discord.Embed(description=f'Bot discord créér par  `Hackcess Version 1.3` / https://hackcess.org ', color = discord.Color.blue() )
     em.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
     await ctx.send(embed= em) 
     
@@ -288,9 +302,10 @@ async def ticket(ctx):
         
   
 @hackcessbot.command(name="bienvenue" , aliases=["bvn"]) 
-async def bvn (ctx , user:discord.Member , * , message= None):
+async def bvn (ctx , user:discord.Member , * , message= None ):
+    await ctx.message.delete()
     
-    embed = discord.Embed(title= "Bienvenue sur le serveur" , url = "https://hackcess.org", description = f"{ctx.author} te souhaite la bienvenue sur le serveur " , color=0x4dff4d)
+    embed = discord.Embed(title=f"Bienvenue sur le serveur {ctx.guild}" , url = "https://hackcess.org", description = f"{ctx.author} Te souhaite la bienvenue sur ce serveur " , color=0x4dff4d)
     embed.set_author(name=ctx.author.display_name, url = "https://www.instagram.com/hack_cess/", icon_url = ctx.author.avatar_url )
     embed.set_thumbnail(url="https://yt3.ggpht.com/YYkVCgqAVNQjQ7biIgrlFNNsWEMvSvCQ-R7Xq4upFdCIEUkvKF-aCmWHkWOhK1oK6dhGDDHwRg=s900-c-k-c0x00ffffff-no-rj")
     embed.add_field(name="Pour m'utiliser",value="`hackcess aide`")
