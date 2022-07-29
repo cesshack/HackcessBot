@@ -4,7 +4,6 @@
 #pip install json
 #----------------
 from http import client
-from turtle import update
 import discord #Module python
 import keep_alive #Pour l'hebergeur
 import json #Pour le fichier prefixes
@@ -13,8 +12,6 @@ from discord.ext import commands #Module python
 #from discord_slash.utils.manage_commands import create_option, create_choice 
 import youtube_dl #Pour recupérer des zic de youtube
 import asyncio
-import os
-import re
 keep_alive.keep_alive()
 
 
@@ -37,7 +34,7 @@ class TempsConverter(commands.Converter): #Pour le temp ban création de class T
     
 
 #CONF GENERAL
-HACKCESSTOKENBOT = '' #Variable TOKEN 
+HACKCESSTOKENBOT = 'OTU5ODM2OTI3NDU1MDAyNjc4.GLMB1w.rEp82b7oi0FuC9_NCFgIxa0Yuy_oRyVzpvPcyE' #Variable TOKEN 
 
 
 
@@ -131,10 +128,11 @@ async def aide(ctx):
        color = discord.Color.green() #Couleur verte
    )
    embed.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
+   embed.set_thumbnail(url="https://yt3.ggpht.com/YYkVCgqAVNQjQ7biIgrlFNNsWEMvSvCQ-R7Xq4upFdCIEUkvKF-aCmWHkWOhK1oK6dhGDDHwRg=s900-c-k-c0x00ffffff-no-rj")
    embed.add_field(name='General',value='`credits`')
    embed.add_field(name='Musique',value='`join`,`leave`,`play`,`skip`,`pause`,`resume`',inline=False)
    embed.add_field(name='Moderation',value='`kick`,`ban`,`tempban`,`unban`,`clear`',inline=False) #Saute une ligne inline=False
-   embed.add_field(name='Autre',value='`changeprefix`,`ping`',inline=False) #Saute une ligne inline=False
+   embed.add_field(name='Autre',value='`changeprefix`,`ping`,`ticket`',inline=False) #Saute une ligne inline=False
    await ctx.send(embed=embed)
 
     
@@ -253,55 +251,52 @@ async def play(ctx, url):
         play_song(client, musics[ctx.guild], video)
 
 
+@hackcessbot.command(name="ticket",aliases = ["t"])
+async def ticket(ctx):
+    
+    em=discord.Embed(description=f" Voulez-vous ouvrir un ticket ?", color = 0xc4302b ) 
+    em.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
+    await ctx.send(embed= em)
+    
+    def checkMessage(message):
+        return message.author == ctx.message.author and ctx.message.channel == message.channel
+    
+    try:
+        ticket = await hackcessbot.wait_for("message" , timeout = 19 ,check = checkMessage)
+    except :
+        await ctx.send("Vous avez été trop long , veuillez refaire la commande ! ")
+        return
+    message = await ctx.send("Cochez la réaction ✅ pour valider le ticket ou cochez la reaction ❌ pour annuler le ticket ")
+    
+    await message.add_reaction("✅")
+    await message.add_reaction("❌")
+    
+    def checkEmoji(reaction , user):
+        return ctx.message.author == user and message.id == reaction.message.id and (str(reaction.emoji) =="✅" or (str(reaction.emoji)=="❌"))
+    
+    try : 
+        reaction , user = await hackcessbot.wait_for("reaction_add",timeout = 19 , check = checkEmoji)
+        if reaction.emoji == "✅" :
+            await ctx.send("Un membre de l'équipe staff va se charger de répondre dans les plus brefs délais .")
+        else:
+            await ctx.send("Ticket annulé")
+    except :
+        await ctx.send("Votre temps de réponse est trop long, veuillez recommencer")
+    await ctx.message.delete()
+
+            
+        
+                                                                                     
 
 
 #NOTIFICATION YOUTUBE
 
     
     
+    
 
 #LEVEL VERSION 1.3
-@hackcessbot.event
-async def on_member_join(member):
-    with open('users.json','r') as f:
-        users = json.load(f)
-        
-    await update_data(users, member)
-    
-    with open('users.json','w') as f:
-        json.dump(users , f)
 
-@hackcessbot.event
-async def on_message(message):
-    with open('users.json','r') as f:
-        users = json.load(f)
-    
-    await update_data(users, message.author)
-    await add_experience(users, message.author, 5)
-    await level_up(users, message.author, message.channel)
-    
-    with open('users.json','w') as f :
-        json.dump(users,f)
-        
-   
-
-async def update_data(users, user):
-    if not user.id in users:
-        users[user.id] = {}
-        users[user.id]['experience'] = 0
-        users[user.id]['level'] = 1
-        
-async def add_experience(users,user,exp):
-    users[user.id]['experience'] += exp 
-    
-async def level_up(users,user,channel):
-    experience = users[user.id]['experience']
-    lvl_start = users[user.id]['level']
-    lvl_end = int(experience ** (1/4))
-    
-    if lvl_start < lvl_end :
-        await client.send_message(channel,'{} a atteint le niveau {}'.format(user.mention,lvl_end))
-        users[user.id]['level'] = lvl_end
    
 
 
@@ -375,7 +370,11 @@ async def on_command_error(ctx, error):
          em = discord.Embed(description=f'**⚠️ERROR 404 Commande invalide⚠️**') #Envoie cet phrase
          await ctx.send(embed= em)
         
-
+@unban.error
+async def unban_error(ctx,error):
+    if isinstance(error,commands.MissingPermissions):
+        em = discord.Embed(description=f"**⚠️Vous n'êtes pas autorisé à débannir⚠️**",color = 0xc4302b )
+        await ctx.send(embed = em)
 
 
 
