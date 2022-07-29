@@ -46,7 +46,7 @@ credits
 join,leave,play,skip,pause,resume
 #### Moderation :
 kick,ban,tempban,unban,clear
-###Autre : 
+### Autre : 
 changeprefix,ping
 
 
