@@ -277,16 +277,26 @@ async def ticket(ctx):
     try : 
         reaction , user = await hackcessbot.wait_for("reaction_add",timeout = 19 , check = checkEmoji)
         if reaction.emoji == "✅" :
-            await ctx.send("Un membre de l'équipe staff va se charger de répondre dans les plus brefs délais .")
+            await user.send("Un membre de l'équipe staff va se charger de répondre dans les plus brefs délais .")
         else:
-            await ctx.send("Ticket annulé")
+            await user.send("Ticket annulé")
     except :
         await ctx.send("Votre temps de réponse est trop long, veuillez recommencer")
     await ctx.message.delete()
 
             
         
-                                                                                     
+  
+@hackcessbot.command(name="bienvenue" , aliases=["bvn"]) 
+async def bvn (ctx , user:discord.Member , * , message= None):
+    
+    embed = discord.Embed(title= "Bienvenue sur le serveur" , url = "https://hackcess.org", description = f"{ctx.author} te souhaite la bienvenue sur le serveur " , color=0x4dff4d)
+    embed.set_author(name=ctx.author.display_name, url = "https://www.instagram.com/hack_cess/", icon_url = ctx.author.avatar_url )
+    embed.set_thumbnail(url="https://yt3.ggpht.com/YYkVCgqAVNQjQ7biIgrlFNNsWEMvSvCQ-R7Xq4upFdCIEUkvKF-aCmWHkWOhK1oK6dhGDDHwRg=s900-c-k-c0x00ffffff-no-rj")
+    embed.add_field(name="Pour m'utiliser",value="`hackcess aide`")
+    embed.add_field(name="Créer un ticket",value="`hackcess ticket`", inline = True)
+    await user.send(embed=embed)
+                                                                                   
 
 
 #NOTIFICATION YOUTUBE
