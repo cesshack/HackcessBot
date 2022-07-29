@@ -4,6 +4,7 @@
 #pip install json
 #----------------
 from http import client
+from turtle import update
 import discord #Module python
 import keep_alive #Pour l'hebergeur
 import json #Pour le fichier prefixes
@@ -126,7 +127,7 @@ async def ping(ctx,arg=None):
 async def aide(ctx):
    embed = discord.Embed(
        title = 'Aide', #Titre de l'embed 'Aide'
-       description = 'Toutes les commandes du bot',
+       description = 'Toutes les commandes du bot : https://cesshack.github.io/HackcessBot/',
        color = discord.Color.green() #Couleur verte
    )
    embed.set_footer(text=f'Requête faite par - {ctx.author}',icon_url=ctx.author.avatar_url)
@@ -232,6 +233,7 @@ def play_song(client, queue, song):
     client.play(source, after=next)
 
 
+
 @hackcessbot.command(name="play",aliases=["p"])
 async def play(ctx, url):
     print("play")
@@ -259,7 +261,48 @@ async def play(ctx, url):
     
 
 #LEVEL VERSION 1.3
+@hackcessbot.event
+async def on_member_join(member):
+    with open('users.json','r') as f:
+        users = json.load(f)
+        
+    await update_data(users, member)
     
+    with open('users.json','w') as f:
+        json.dump(users , f)
+
+@hackcessbot.event
+async def on_message(message):
+    with open('users.json','r') as f:
+        users = json.load(f)
+    
+    await update_data(users, message.author)
+    await add_experience(users, message.author, 5)
+    await level_up(users, message.author, message.channel)
+    
+    with open('users.json','w') as f :
+        json.dump(users,f)
+        
+   
+
+async def update_data(users, user):
+    if not user.id in users:
+        users[user.id] = {}
+        users[user.id]['experience'] = 0
+        users[user.id]['level'] = 1
+        
+async def add_experience(users,user,exp):
+    users[user.id]['experience'] += exp 
+    
+async def level_up(users,user,channel):
+    experience = users[user.id]['experience']
+    lvl_start = users[user.id]['level']
+    lvl_end = int(experience ** (1/4))
+    
+    if lvl_start < lvl_end :
+        await client.send_message(channel,'{} a atteint le niveau {}'.format(user.mention,lvl_end))
+        users[user.id]['level'] = lvl_end
+   
 
 
     
