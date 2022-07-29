@@ -34,7 +34,7 @@ class TempsConverter(commands.Converter): #Pour le temp ban création de class T
     
 
 #CONF GENERAL
-HACKCESSTOKENBOT = 'OTU5ODM2OTI3NDU1MDAyNjc4.GLMB1w.rEp82b7oi0FuC9_NCFgIxa0Yuy_oRyVzpvPcyE' #Variable TOKEN 
+HACKCESSTOKENBOT = '' #Variable TOKEN 
 
 
 
