@@ -47,7 +47,7 @@ join,leave,play,skip,pause,resume
 #### Moderation :
 kick,ban,tempban,unban,clear
 ### Autre : 
-changeprefix,ping,bvn
+changeprefix,ping,bvn,ticket
 
 
 ## Auteurs
